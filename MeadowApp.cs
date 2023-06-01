@@ -2,6 +2,7 @@
 using Meadow.Devices;
 using Meadow.Hardware;
 using Meadow.Units;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MeadowApp
@@ -19,7 +20,8 @@ namespace MeadowApp
 			spiDevice.Write(chipSelect, new byte[] { 0x88, 0x8C, 0xC8, 0xCC });
 			spiDevice.Write(chipSelect, new byte[] { 0b0101_0101, 0b1010_1010, 0b0101_0101, 0b1010_1010 });
 			spiDevice.Write(chipSelect, new byte[] { 0b0100_0000, 0b0110_0000, 0b0111_0000, 0b0111_1000 });
-
+			var byteArray = Enumerable.Repeat((byte) 0xCC, 120).ToArray();
+			spiDevice.Write(chipSelect, byteArray);
 			return base.Run();
 		}
 
