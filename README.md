@@ -12,6 +12,15 @@
 |T1H + T1L|650 ns |1250 ns|1850 ns|
 |RESET    |50 µs  |-      |-      |
 
+## Current Theory
+
+The idea is to use the MOSI signal from the SPI bus to signal the various high
+and low periods. Some cheats that might be helpful:
+
+* As long as T0H and T1H are in specification, you may be able to get away with
+  T0L and T1L exceeding the maximum (provided that this period is less than the
+  minimum for RESET.) This is naughty, but potentially helpful.
+
 ## Current Concerns
 
 * Configured frequency (3.2 MHz) doesn't match actual frequency (3 MHz). This
@@ -19,6 +28,7 @@
   closest divisor.
 * After calls to `ISpiBus.Write`, the MOSI line is sometimes high, sometimes
   low. This isn't going to work with my current thinking -- it needs to be low.
+  This is also present in between bytes during the same call to `Write`.
 
 ## References
 
