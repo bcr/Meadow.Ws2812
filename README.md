@@ -1,4 +1,4 @@
-# WS2812 LEDs Using SPI on the Meadow Labs Feather
+# WS2812 LEDs Using SPI on the Wilderness Labs Meadow
 
 ## Timing
 
