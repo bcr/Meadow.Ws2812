@@ -1,6 +1,6 @@
 ﻿using Meadow;
 using Meadow.Devices;
-using Meadow.Hardware;
+using Meadow.Foundation;
 using Meadow.Units;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,18 +10,15 @@ namespace MeadowApp
     // Change F7FeatherV2 to F7FeatherV1 for V1.x boards
     public class MeadowApp : App<F7FeatherV2>
 	{
-		private ISpiBus spiDevice;
-		private IDigitalOutputPort chipSelect;
+        private Ws2812 _ws2812;
 
-		public override Task Run()
+        public override Task Run()
 		{
 			Resolver.Log.Info("Run...");
 
-			spiDevice.Write(chipSelect, new byte[] { 0x88, 0x8C, 0xC8, 0xCC });
-			spiDevice.Write(chipSelect, new byte[] { 0b0101_0101, 0b1010_1010, 0b0101_0101, 0b1010_1010 });
-			spiDevice.Write(chipSelect, new byte[] { 0b0100_0000, 0b0110_0000, 0b0111_0000, 0b0111_1000 });
-			var byteArray = Enumerable.Repeat((byte) 0xCC, 120).ToArray();
-			spiDevice.Write(chipSelect, byteArray);
+			_ws2812.SetColors(Enumerable.Repeat(Color.White, 10));
+			_ws2812.Update();
+
 			return base.Run();
 		}
 
@@ -29,7 +26,7 @@ namespace MeadowApp
 		{
 			Resolver.Log.Info("Initialize...");
 
-			spiDevice = Device.CreateSpiBus(new Frequency(3.2, Frequency.UnitType.Megahertz));
+			_ws2812 = new Ws2812(Device.CreateSpiBus(new Frequency(3.2, Frequency.UnitType.Megahertz)), 10);
 
 			return base.Initialize();
 		}
