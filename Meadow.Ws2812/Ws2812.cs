@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Meadow.Foundation;
 using Meadow.Hardware;
@@ -11,6 +12,8 @@ namespace MeadowApp
         private byte[] _transmitBuffer;
 
         private static readonly byte[] ws2812Bytes = new byte[] { 0x88, 0x8C, 0xC8, 0xCC };
+
+        public int LedCount { get; internal set; }
 
         private static IEnumerable<byte> ByteToWs2812Byte(byte theByte)
         {
@@ -50,6 +53,7 @@ namespace MeadowApp
         public Ws2812(ISpiBus spiBus, int ledCount)
         {
             _spiBus = spiBus;
+            LedCount = ledCount;
             // To transmit 8 bits of color we need 4 bytes and there are 3 colors
             _transmitBuffer = new byte[ledCount * 4 * 3];
         }

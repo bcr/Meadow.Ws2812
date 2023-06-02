@@ -16,7 +16,7 @@ namespace MeadowApp
 		{
 			Resolver.Log.Info("Run...");
 
-			_ws2812.SetColors(Enumerable.Repeat(Color.White, 10));
+			_ws2812.SetColors(Enumerable.Repeat(Color.White, _ws2812.LedCount));
 			_ws2812.Update();
 
 			return base.Run();
@@ -26,7 +26,8 @@ namespace MeadowApp
 		{
 			Resolver.Log.Info("Initialize...");
 
-			_ws2812 = new Ws2812(Device.CreateSpiBus(new Frequency(3.2, Frequency.UnitType.Megahertz)), 10);
+			int ledCount = 10;
+			_ws2812 = new Ws2812(Device.CreateSpiBus(new Frequency(3.2, Frequency.UnitType.Megahertz)), ledCount);
 
 			return base.Initialize();
 		}
