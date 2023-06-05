@@ -11,7 +11,7 @@ namespace MeadowApp
         private IDigitalOutputPort _chipSelect;
         private byte[] _transmitBuffer;
 
-        private static readonly byte[] ws2812Bytes = new byte[] { 0x88, 0x8C, 0xC8, 0xCC };
+        private static readonly byte[] ws2812Bytes = new byte[] { 0x44, 0x46, 0x64, 0x66 };
 
         public int LedCount { get; internal set; }
 
