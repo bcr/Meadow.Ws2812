@@ -36,3 +36,19 @@ and low periods. Some cheats that might be helpful:
 ## References
 
 [WS2812 Datasheet](https://cdn-shop.adafruit.com/datasheets/WS2812.pdf) (courtesy of Adafruit)
+
+
+## Bench Test
+
+To set up a bench test, connect the power line of a WS2812b strip to the 3v3 pin on the meadow, the ground line to the GND pin on the meadow, and the data line to the COPI pin on the meadow.
+
+Primary Colors
+```var colors = new Color[] { Color.Red, Color.Green, Color.Blue, Color.Black, Color.Blue, Color.Green, Color.Red, Color.White, Color.Red, Color.Green };```
+![Primary Colors Result](https://github.com/bcr/Meadow.Ws2812/blob/main/bench_test_results/primary_colors.jpg?raw=true)
+
+Secondary Colors
+```var colors = new Color[] { Color.Magenta, Color.LightGreen, Color.SteelBlue, Color.Gray, Color.Brown, Color.Orange, Color.Teal, Color.SeaGreen, Color.SlateBlue, Color.DarkGoldenrod };```
+
+![Secondary Colors Result](https://github.com/bcr/Meadow.Ws2812/blob/main/bench_test_results/secondary_colors.jpg?raw=true)
+
+
