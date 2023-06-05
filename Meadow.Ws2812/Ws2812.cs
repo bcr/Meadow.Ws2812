@@ -51,10 +51,11 @@ namespace MeadowApp
             _spiBus.Write(_chipSelect, _transmitBuffer);
         }
 
-        public Ws2812(ISpiBus spiBus, int ledCount)
+        public Ws2812(ISpiBus spiBus, int ledCount, IDigitalOutputPort chipSelect = null)
         {
             _spiBus = spiBus;
             LedCount = ledCount;
+            _chipSelect = chipSelect;
             // To transmit 8 bits of color we need 4 bytes and there are 3 colors
             _transmitBuffer = new byte[ledCount * 4 * 3];
         }
