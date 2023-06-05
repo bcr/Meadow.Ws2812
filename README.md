@@ -29,6 +29,9 @@ and low periods. Some cheats that might be helpful:
 * After calls to `ISpiBus.Write`, the MOSI line is sometimes high, sometimes
   low. This isn't going to work with my current thinking -- it needs to be low.
   This is also present in between bytes during the same call to `Write`.
+  [Here is a forum post](https://community.st.com/s/question/0D53W00000CQITYSA5/spi-mosi-idle-state-quirk-sometimes-high-sometimes-low)
+  that documents the problem. I believe I have managed to avoid it by never
+  setting the MSB in transmitted data.
 
 ## References
 
