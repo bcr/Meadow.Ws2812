@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Meadow.Foundation;
 using Meadow.Hardware;
+using System.Linq;
 
 namespace MeadowApp
 {
@@ -28,7 +29,7 @@ namespace MeadowApp
         {
             int position = 0;
 
-            foreach (var color in colors)
+            foreach (var color in colors.Take(LedCount))
             {
                 foreach (var theByte in ByteToWs2812Byte(color.G))
                 {
