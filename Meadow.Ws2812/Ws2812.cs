@@ -25,25 +25,41 @@ namespace MeadowApp
             }
         }
 
+        private void SetOneColor(ref int position, Color color)
+        {
+            foreach (var theByte in ByteToWs2812Byte(color.G))
+            {
+                _transmitBuffer[position++] = theByte;
+            }
+            foreach (var theByte in ByteToWs2812Byte(color.R))
+            {
+                _transmitBuffer[position++] = theByte;
+            }
+            foreach (var theByte in ByteToWs2812Byte(color.B))
+            {
+                _transmitBuffer[position++] = theByte;
+            }
+        }
+
         public void SetColors(IEnumerable<Color> colors)
         {
             int position = 0;
 
             foreach (var color in colors.Take(LedCount))
             {
-                foreach (var theByte in ByteToWs2812Byte(color.G))
-                {
-                    _transmitBuffer[position++] = theByte;
-                }
-                foreach (var theByte in ByteToWs2812Byte(color.R))
-                {
-                    _transmitBuffer[position++] = theByte;
-                }
-                foreach (var theByte in ByteToWs2812Byte(color.B))
-                {
-                    _transmitBuffer[position++] = theByte;
-                }
+                SetOneColor(ref position, color);
             }
+        }
+
+        public void ClearColors()
+        {
+            SetColors(Enumerable.Repeat<Color>(Color.Black, LedCount));
+        }
+
+        public void SetColor(int index, Color color)
+        {
+            int position = index * 4 * 3;
+            SetOneColor(ref position, color);
         }
 
         public void Update()
