@@ -25,6 +25,12 @@ namespace MeadowApp
             }
         }
 
+        public void Clear()
+        {
+            _transmitBuffer = Enumerable.Repeat((byte) 0x44, _transmitBuffer.Length).ToArray();
+            Update();
+        }
+
         public void SetColors(IEnumerable<Color> colors)
         {
             int position = 0;
