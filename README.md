@@ -1,5 +1,14 @@
 # WS2812 LEDs Using SPI on the Wilderness Labs Meadow
 
+## Usage
+
+The way the current system works is that you specify the number of LEDs and
+the `Ws2812` class allocates a byte array to store the encoded data. When you
+call the `SetColors` method, you provide an `IEnumerable` that produces `Color`
+structures, and then the R, G and B values from that structure are converted
+to the on-the-wire representation. The `Update` method simply does a SPI
+transmission of the final encoded data.
+
 ## Timing
 
 |Value    |Minimum|Nominal|Maximum|
@@ -20,6 +29,22 @@ and low periods. Some cheats that might be helpful:
 * As long as T0H and T1H are in specification, you may be able to get away with
   T0L and T1L exceeding the maximum (provided that this period is less than the
   minimum for RESET.) This is naughty, but potentially helpful.
+
+Configuring the SPI data rate to 3 MHz, we can generate pulses that are a
+multiple of 333 ns. So when we need to send T0H pulses we use a single one bit
+in the SPI data stream, and to send T1H pulses we use two one bits, yielding
+pulse widths of about 333 ns and 666 ns respectively.
+
+Taking advantage of the cheat above, we have longer T0L and T1L timings
+partially due to inter-byte SPI delay (one extra 333 ns interval of low)
+and partially due to data packing optimization (by encoding a single bit of
+pixel data as four bits of SPI data, the data conversion is simplified.)
+We have not seen any situation where the RESET threshold is exceeded. Based
+on our understanding of the underlying Nuttx SPI implementation, they are not
+using DMA, but they are keeping the 32 bit FIFO register full, so if there is
+any condition where the Nuttx SPI write loop is interrupted (chip interrupt for
+instance), there should not be any data alteration if control returns within
+32 * 330 ns.
 
 ## Current Concerns
 
