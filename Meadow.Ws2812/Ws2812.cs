@@ -12,6 +12,8 @@ namespace MeadowApp
         private IDigitalOutputPort _chipSelect;
         private byte[] _transmitBuffer;
 
+        private const int _bytesPerColorPart = 4;
+
         private static readonly byte[] ws2812Bytes = new byte[] { 0x44, 0x46, 0x64, 0x66 };
 
         public int LedCount { get; internal set; }
@@ -22,6 +24,24 @@ namespace MeadowApp
             {
                 yield return ws2812Bytes[(theByte & 0b1100_0000) >> 6];
                 theByte <<= 2;
+            }
+        }
+
+        public void Clear()
+        {
+            // prepare the transmit buffer to send all "0"s turning all LEDs off
+            _transmitBuffer = Enumerable.Repeat(ws2812Bytes[0], _transmitBuffer.Length).ToArray();
+        }
+
+        public void ClearLed(int ledIndex)
+        {
+            // 4 bytes per color and 3 colors
+            int start = ledIndex * _bytesPerColorPart * 3;
+            int end = start + _bytesPerColorPart * 3;
+
+            for(var i = start; i < end; i++)
+            {
+                _transmitBuffer[i] = ws2812Bytes[0];
             }
         }
 
@@ -57,7 +77,7 @@ namespace MeadowApp
             LedCount = ledCount;
             _chipSelect = chipSelect;
             // To transmit 8 bits of color we need 4 bytes and there are 3 colors
-            _transmitBuffer = new byte[ledCount * 4 * 3];
+            _transmitBuffer = new byte[ledCount * _bytesPerColorPart * 3];
         }
     }
 }
