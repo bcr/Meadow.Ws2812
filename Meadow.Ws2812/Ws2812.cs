@@ -27,7 +27,20 @@ namespace MeadowApp
 
         public void Clear()
         {
-            _transmitBuffer = Enumerable.Repeat((byte) 0x44, _transmitBuffer.Length).ToArray();
+            // prepare the transmit buffer to send all "0"s turning all LEDs off
+            _transmitBuffer = Enumerable.Repeat(ws2812Bytes[0], _transmitBuffer.Length).ToArray();
+        }
+
+        public void ClearLed(int ledIndex)
+        {
+            // 4 bytes per color and 3 colors
+            int start = ledIndex * 12;
+            int end = start + 12;
+
+            for(var i = start; i <= end; i++)
+            {
+                _transmitBuffer[i] = ws2812Bytes[0];
+            }
         }
 
         public void SetColors(IEnumerable<Color> colors)
